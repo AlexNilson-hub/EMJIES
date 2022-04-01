@@ -80,8 +80,11 @@
 </button>
 
 <!--Form 2-->
-<div id="d">
+<div>
     <h3>Таблица данных №2</h3>
+</div>
+<div id="status">
+    <p></p>
 </div>
 
 <div class="px-1 mt-4">
@@ -118,12 +121,12 @@
 
 <script>
     window.onload = function () {
-        const socket = new WebSocket("ws:// 185.246.65.199:8080 ");
+        const socket = new WebSocket("wss://demo.piesocket.com/v3/channel_1?api_key=oCdCMcMPQpbvNjUIzqtvF1d2X2okWpDQj4AwARJuAgtjhzKxVEjQU6IdCjwm&notify_self");
         const status = document.querySelector("#status");
 
 //Открытие соединения
-        socket.onopen = function (event) {
-            status.innerHTML = "соединение установлено!" + event.message;
+        socket.onopen = function () {
+            status.innerHTML = "соединение установлено!";
 
         }
 //Закрытие соединения
@@ -139,7 +142,7 @@
 //Получение данных
         socket.onmessage = function(event){
             let message = JSON.parse(event.data);
-            status.innerHTML = "пришли данные: <b> " + event.message + "</b>" + message.formMsg;
+            status.innerHTML = "Пришли данные: </br> " + "</br>" + message.name + "</br>" + message.msg;
         }
 
 //Ошибка соединения
@@ -150,8 +153,8 @@
 
         document.forms["formSocket"].onsubmit = function(){
             let message = {
-                formName: this.formName.value,
-                formMsg: this.formMsg.value
+                name: this.formName.value,
+                msg: this.formMsg.value
             }
 
             socket.send(JSON.stringify(message));
